@@ -1,0 +1,37 @@
+{
+  "rules": {
+    "indent": [
+      2,
+      2
+    ],
+    "quotes": [
+      2,
+      "single"
+    ],
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "semi": [
+      2,
+      "never"
+    ]
+  },
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true
+  },
+  "globals": {
+    "should": true,
+    "m": true,
+    "localStorage": true,
+    "describe": false,
+    "it": false,
+    "after": false,
+    "afterEach": false,
+    "mock": false,
+    "keyCode": false
+  },
+  "extends": "eslint:recommended"
+}

@@ -6,10 +6,35 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/nickstew/mithril-select.git"
+    "url": "git+https://github.com/nickstew/mithril-select.git"
+  },
+  "author": {
+    "name": "Nick Stewart",
+    "email": "nick.stewart.programmer@gmail.com",
+    "url": "http://nickstew.github.io/"
+  },
+  "contributors": [
+    {
+      "name": "Nick Stewart",
+      "email": "nick.stewart.programmer@gmail.com",
+      "url": "http://nickstew.github.io/"
+    }
+  ],
+  "engines": {
+    "nodejs": "0.12"
+  },
+  "scripts": {
+    "test": "./node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha --require test/common.js test/*.js -- -R spec"
   },
   "dependencies": {
     "lodash": "^3.10.1",
     "mithril": "^0.2.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-shell": "^0.4.3",
+    "istanbul": "^0.3.19",
+    "mocha": "^2.3.0",
+    "should": "^7.1.0"
   }
 }
