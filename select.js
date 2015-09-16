@@ -1,5 +1,8 @@
 var m = require('mithril')
-var _ = require('lodash')
+var extend = require('lodash/object/extend')
+var map = require('lodash/collection/map')
+var sortBy = require('lodash/collection/sortBy')
+
 
 /**
  * Select Component Namespace
@@ -55,10 +58,7 @@ var defaultSelectConfig = {
   options: [],
   initialSelectedOption: undefined,
   isEqual: function(optionA, optionB) {
-    if(!optionA || !optionB) {
-      return false
-    }
-    return optionA.display === optionB.display
+    return (!optionA || !optionB) ? false : optionA.display === optionB.display
   },
   sortBy: function(option) {
     return option.display
@@ -77,7 +77,7 @@ var SelectViewModel = (function() {
    */
   function SelectViewModel(config) {
     config = config || {}
-    config = _.extend({}, defaultSelectConfig, config)
+    config = extend({}, defaultSelectConfig, config)
     this.label = config.label
     this.options = m.prop(config.options)
     this.selectedOption = m.prop(config.initialSelectedOption)
@@ -104,7 +104,7 @@ var SelectViewModel = (function() {
     }
   }
   SelectViewModel.prototype.sortOptions = function(options) {
-    var ascendingOrder = _.sortBy(options, this.sortBy)
+    var ascendingOrder = sortBy(options, this.sortBy)
     return this.reverse ? ascendingOrder.reverse() : ascendingOrder
   }
   SelectViewModel.prototype.renderOption = function(option) {
@@ -153,7 +153,7 @@ var Select = {
         ctrl.vm.options().length > 1 && ctrl.vm.isShowingDropDown() ?
         m('.options-container',
           m('ul.options',
-            _.map(ctrl.vm.sortOptions.call(ctrl.vm, ctrl.vm.options()), ctrl.vm.renderOption.bind(ctrl.vm))
+            map(ctrl.vm.sortOptions.call(ctrl.vm, ctrl.vm.options()), ctrl.vm.renderOption.bind(ctrl.vm))
           )
         )
         :
