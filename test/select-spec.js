@@ -8,7 +8,7 @@ function selectTesting(mock){
       describe('constructor', function() {
         describe('uses lodash.extend to build config object with defaults', function(){
           it('should smash the defaults with explicit config', function() {
-            const config = {
+            let config = {
               label: 'Clients',
               isEqual: function(){return true;}
             };
