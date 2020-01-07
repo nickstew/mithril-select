@@ -1,7 +1,7 @@
 var m = require('mithril')
-var extend = require('lodash/object/extend')
-var map = require('lodash/collection/map')
-var sortBy = require('lodash/collection/sortBy')
+var extend = require('lodash/extend')
+var map = require('lodash/fp/map')
+var sortBy = require('lodash/fp/sortBy')
 
 
 /**
@@ -76,37 +76,40 @@ var SelectViewModel = (function() {
    * @constructor
    */
   function SelectViewModel(config) {
-    config = config || {}
-    config = extend({}, defaultSelectConfig, config)
-    this.label = config.label
-    this.options = m.prop(config.options)
-    this.selectedOption = m.prop(config.initialSelectedOption)
-    this.isEqual = config.isEqual
-    this.sortBy = config.sortBy
-    this.reverse = config.sortByDescending
-    this.onSelect = config.onSelect
-    this.isShowingDropDown = m.prop(false)
+    config = config || {};
+    config = extend({}, defaultSelectConfig, config);
+    this.label = config.label;
+    this.options = m.prop(config.options);
+    this.selectedOption = m.prop(config.initialSelectedOption);
+    this.isEqual = config.isEqual;
+    this.sortBy = config.sortBy;
+    this.reverse = config.sortByDescending;
+    this.onSelect = config.onSelect;
+    this.isShowingDropDown = m.prop(false);
 
     if (!config.initialSelectedOption) {
       // if config isn't set -> pull the first option
       config.initialSelectedOption = config.options.length > 0 ?
         this.sortOptions(config.options)[0]
-        : defaultSelectConfig.initialSelectedOption
+        : defaultSelectConfig.initialSelectedOption;
       // notify listener that the initial option has been selected
-      this.selectOption(config.initialSelectedOption)
+      this.selectOption(config.initialSelectedOption);
     }
   }
+  
   SelectViewModel.prototype.selectOption = function(option) {
-    this.isShowingDropDown(false)
+    this.isShowingDropDown(false);
     if (!this.isEqual(this.selectedOption(), option)) {
-      this.selectedOption(option)
-      this.onSelect(option.value)
+      this.selectedOption(option);
+      this.onSelect(option.value);
     }
-  }
+  };
+  
   SelectViewModel.prototype.sortOptions = function(options) {
-    var ascendingOrder = sortBy(options, this.sortBy)
-    return this.reverse ? ascendingOrder.reverse() : ascendingOrder
-  }
+    var ascendingOrder = sortBy(this.sortBy)(options);
+    return this.reverse ? ascendingOrder.reverse() : ascendingOrder;
+  };
+  
   SelectViewModel.prototype.renderOption = function(option) {
     return m('li',
       { onclick: this.selectOption.bind(this, option) },
@@ -114,10 +117,11 @@ var SelectViewModel = (function() {
         (this.isEqual(this.selectedOption(), option) ? '.selected' : '')
       ),
       option.display
-    )
-  }
-  return SelectViewModel
-})()
+    );
+  };
+  
+  return SelectViewModel;
+})();
 
 var Select = {
   vm: SelectViewModel,
@@ -125,9 +129,10 @@ var Select = {
    * @param {Select.SelectConfig} [config] - configuration of the Select View Model
    */
   controller: function(config) {
-    this.vm = new SelectViewModel(config)
+    this.vm = new SelectViewModel(config);
   },
   view: function(ctrl) {
+    const optionRenderer = map(ctrl.vm.renderOption.bind(ctrl.vm));
     return m('.dropdown', { onmouseleave: ctrl.vm.isShowingDropDown.bind(ctrl.vm, false) },
       [
         m('label.selection',
@@ -153,13 +158,13 @@ var Select = {
         ctrl.vm.options().length > 1 && ctrl.vm.isShowingDropDown() ?
         m('.options-container',
           m('ul.options',
-            map(ctrl.vm.sortOptions.call(ctrl.vm, ctrl.vm.options()), ctrl.vm.renderOption.bind(ctrl.vm))
+            optionRenderer(ctrl.vm.sortOptions.call(ctrl.vm, ctrl.vm.options()))
           )
         )
         :
         ''
       ]
-    )
+    );
   }
 }
-module.exports = Select
+module.exports = Select;

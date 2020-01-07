@@ -21,13 +21,13 @@
     }
   ],
   "engines": {
-    "nodejs": "0.12"
+    "nodejs": "12"
   },
   "scripts": {
     "test": "./node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha --require node_modules/mithril-testing/common.js test/*.js -- -R spec"
   },
   "dependencies": {
-    "lodash": "^3.10.1",
+    "lodash": "^4.17.15",
     "mithril": "^0.2.0"
   },
   "devDependencies": {
