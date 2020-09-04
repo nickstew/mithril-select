@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.15",
-    "mithril": "^0.2.0"
+    "mithril": "^2.0.4"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
